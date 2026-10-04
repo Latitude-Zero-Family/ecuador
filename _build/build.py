@@ -2,7 +2,7 @@ import re
 
 FONTS = '''<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Figtree:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Figtree:wght@400;500;600;700&family=DM+Mono:wght@400;500&family=Caveat:wght@600;700&display=swap">
 <link rel="stylesheet" href="styles.css">'''
 
 LOGO = '''<svg class="logo" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
@@ -48,12 +48,56 @@ def post_card(p, live=False):
   <div class="post-body"><div class="meta"><span class="pill">{cat}</span><span>{status}</span></div><h3>{title}</h3><p>{desc}</p></div>
 </a>'''
 
+ICON = {
+ "home":'<path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/>',
+ "start":'<path d="M6 21V4"/><path d="M6 4h11l-2.5 4L17 12H6"/>',
+ "about":'<circle cx="7" cy="7.5" r="2.3"/><circle cx="17" cy="7.5" r="2.3"/><circle cx="12" cy="11" r="1.7"/><path d="M3 19c0-3.3 1.8-6 4-6s4 2.7 4 6"/><path d="M13 19c0-3.3 1.8-6 4-6s4 2.7 4 6"/>',
+ "move":'<path d="M2.5 13.5 21 6.5l-4.5 13-3.6-5.4z"/><path d="M12.9 14.1 21 6.5"/>',
+ "dennisse":'<path d="M12 20s-7.5-4.6-8.8-9.3C2.4 7.6 4.4 5 7.2 5c2 0 3.4 1.2 4.8 3 1.4-1.8 2.8-3 4.8-3 2.8 0 4.8 2.6 4 5.7C19.5 15.4 12 20 12 20z"/>',
+ "ecuador":'<circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/>',
+ "top20":'<path d="m12 3 2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17l-5.4 2.8 1.1-6.1-4.5-4.3 6.1-.8z"/>',
+ "food":'<path d="M3 11h18a9 9 0 0 1-18 0z"/><path d="M8 7c0-1.5 1-1.5 1-3M12 7c0-1.5 1-1.5 1-3M16 7c0-1.5 1-1.5 1-3"/>',
+ "coffee":'<path d="M4 9h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z"/><path d="M17 10.5h1.5a2.5 2.5 0 0 1 0 5H17"/><path d="M8 3.5c0 1.5 1 1.5 1 3M12 3.5c0 1.5 1 1.5 1 3"/>',
+ "quiz":'<circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 1 1 3.4 2.4c-.7.3-1 .8-1 1.5v.6"/><circle cx="12" cy="17" r=".6" fill="currentColor"/>',
+ "festivals":'<path d="M4 20 9 7l8 8z"/><path d="M14 4.5c.5 1 1.5 1.3 2.5 1M18.5 9c1-.3 2 .2 2.5 1M15.5 2.5l.5.5M20 5.5l.6-.4"/>',
+ "sa":'<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.8 2.6 4 5.6 4 9s-1.2 6.4-4 9c-2.8-2.6-4-5.6-4-9s1.2-6.4 4-9z"/>',
+ "planner":'<path d="m3 6.5 6-2.5 6 2.5 6-2.5v13.5l-6 2.5-6-2.5-6 2.5z"/><path d="M9 4v13.5M15 6.5V20"/>',
+ "baby":'<path d="M4 6h3l2 8h9.5a5 5 0 0 0-5-5H9"/><circle cx="9.5" cy="18.5" r="1.8"/><circle cx="17" cy="18.5" r="1.8"/>',
+ "gear":'<rect x="3.5" y="7" width="17" height="12.5" rx="2.5"/><path d="M9 7V5a1.5 1.5 0 0 1 1.5-1.5h3A1.5 1.5 0 0 1 15 5v2M3.5 12.5h17"/>',
+ "checklist":'<rect x="4" y="3.5" width="16" height="17" rx="2.5"/><path d="m8 9 1.5 1.5L12 8M8 15l1.5 1.5L12 14M14.5 9.5H17M14.5 15.5H17"/>',
+ "faq":'<path d="M4 5h11v8H9l-3.5 3v-3H4z"/><path d="M15 9h5v8h-1.5v3L15 17h-5v-1.5"/>',
+ "journal":'<path d="M12 6.5C10 5 7 4.5 3.5 5v13.5c3.5-.5 6.5 0 8.5 1.5 2-1.5 5-2 8.5-1.5V5C17 4.5 14 5 12 6.5z"/><path d="M12 6.5V20"/>',
+ "videos":'<rect x="3" y="5" width="18" height="14" rx="3"/><path d="m10 9 5 3-5 3z"/>',
+ "stories":'<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13.5 6.5 4 4"/>',
+ "community":'<circle cx="12" cy="8" r="3"/><path d="M6 20c0-3.5 2.7-6 6-6s6 2.5 6 6"/><circle cx="4.8" cy="10" r="1.8"/><circle cx="19.2" cy="10" r="1.8"/>',
+ "postcard":'<rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/>',
+ "passport":'<rect x="5" y="3" width="14" height="18" rx="2"/><circle cx="12" cy="10.5" r="3"/><path d="M9 16.5h6"/>',
+ "work":'<path d="m3 12 4-4 3 2 4-3 7 5-3 3"/><path d="m7 8 7 7c.6.6 1.6.6 2.1 0s.6-1.5 0-2.1M10.5 14.5l2 2c.6.6 1.6.6 2.1 0M8.5 16.5l1 1c.6.6 1.5.6 2 0"/>',
+ "kit":'<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/>',
+}
+def icon(k):
+    return f'<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">{ICON.get(k, ICON["start"])}</svg>'
+
+MEGA = {
+ "Our story": ("Meet the family", "An American dad, an Ecuadorian mom and a baby boy, packing up for the equator.", "cuenca", "Our first story", "Why we're moving our family to Ecuador", "journal-why-ecuador.html", "Read it"),
+ "Ecuador": ("Four worlds, one country", "Volcanoes, beaches, rainforest and the Galápagos. Plus all the food.", "quilotoa", "Two-minute quiz", "Which Ecuador region fits your family?", "quiz.html", "Take the quiz"),
+ "Family travel": ("Little legs, big trips", "Plans, packing lists and honest notes on exploring with a baby.", "frailes", "Free planner", "Build a day-by-day family trip", "trip-planner.html", "Start planning"),
+ "Stories": ("Pull up a chair", "Our journal, our videos and plenty of fun ways to join in.", "cotopaxi", "12 stamps to collect", "Fill your explorer passport", "passport.html", "Open your passport"),
+ "Work with us": ("Let's make something", "For hotels, tourism boards and family brands that travel like we do.", "montanita", "For partners", "See who we create for", "media-kit.html", "Open the media kit"),
+}
+TINTS = ["sun", "moss", "sky", "coral"]
+
 def nav(active):
-    groups = []
+    groups = [f'<li class="home-li"><a class="home-link" href="./"{" aria-current=\"page\"" if active == "home" else ""}>{icon("home")}<span>Home</span></a></li>']
     for gi, (label, links) in enumerate(MENU):
         cur = any(k == active for *_, k in links)
-        subs = "".join(f'<li><a href="{h}"{" aria-current=\"page\"" if k == active else ""}>{t}<span>{d}</span></a></li>' for h, t, d, k in links)
-        groups.append(f'<li class="grp{" current" if cur else ""}"><button class="grp-btn" type="button" aria-expanded="false" aria-controls="sub-{gi}">{label}</button><ul class="sub" id="sub-{gi}">{subs}</ul></li>')
+        subs = "".join(f'<li style="--i:{i}"><a href="{h}"{" aria-current=\"page\"" if k == active else ""}><i class="mm-ic t-{TINTS[(i + gi) % 4]}">{icon(k)}</i><b>{t}<span>{d}</span></b></a></li>' for i, (h, t, d, k) in enumerate(links))
+        it, idesc, img, ftag, ftitle, fhref, fcta = MEGA[label]
+        groups.append(f'''<li class="grp{" current" if cur else ""}"><button class="grp-btn" type="button" aria-expanded="false" aria-controls="sub-{gi}">{label}</button><div class="sub mega" id="sub-{gi}"><div class="mega-in">
+<div class="mega-intro" aria-hidden="true"><span class="mega-num">0{gi + 1} / 0{len(MENU)}</span><b class="mega-title">{it}</b><p>{idesc}</p><span class="mega-doodle d{gi}"></span></div>
+<ul class="mega-links{" two" if len(links) > 4 else ""}">{subs}</ul>
+<a class="mega-feat" href="{fhref}"><span class="mega-ph"><img src="img/{img}-800.jpg" alt="" loading="lazy"></span><span class="mega-tag">{ftag}</span><b>{ftitle}</b><span class="mega-cta">{fcta} →</span></a>
+</div></div></li>''')
     return f'''<nav class="nav" aria-label="Main">
   <div class="wrap">
     <a class="brand" href="./">{LOGO}<span>Latitude Zero</span></a>
@@ -127,10 +171,12 @@ go();window.addEventListener('load',go);window.addEventListener('pageshow',go);}
 (function(){var nav=document.querySelector('.nav'),b=document.querySelector('.menu-btn');if(!nav)return;
 var groups=[].slice.call(document.querySelectorAll('.grp'));
 function closeAll(ex){groups.forEach(function(g){if(g!==ex){g.classList.remove('open');g.querySelector('.grp-btn').setAttribute('aria-expanded','false')}})}
+var DESK='(hover:hover) and (min-width:1101px)',tmr=null;function desk(){return window.matchMedia(DESK).matches}
+function openG(g){clearTimeout(tmr);closeAll(g);g.classList.add('open');g.querySelector('.grp-btn').setAttribute('aria-expanded','true')}
 groups.forEach(function(g){var btn=g.querySelector('.grp-btn');
-  btn.addEventListener('click',function(e){e.stopPropagation();var hov=window.matchMedia('(hover:hover) and (min-width:1101px)').matches;var o=hov?true:g.classList.toggle('open');g.classList.toggle('open',o);btn.setAttribute('aria-expanded',o?'true':'false');closeAll(g)});
-  g.addEventListener('mouseenter',function(){if(window.matchMedia('(hover:hover) and (min-width:1101px)').matches){closeAll(g);g.classList.add('open');btn.setAttribute('aria-expanded','true')}});
-  g.addEventListener('mouseleave',function(){if(window.matchMedia('(hover:hover) and (min-width:1101px)').matches){g.classList.remove('open');btn.setAttribute('aria-expanded','false')}});
+  btn.addEventListener('click',function(e){e.stopPropagation();if(desk()){if(g.classList.contains('open')&&e.detail===0){closeAll(null)}else openG(g);return}var o=g.classList.toggle('open');btn.setAttribute('aria-expanded',o?'true':'false');closeAll(g)});
+  g.addEventListener('mouseenter',function(){if(desk()){clearTimeout(tmr);tmr=setTimeout(function(){openG(g)},nav.querySelector('.grp.open')?0:70)}});
+  g.addEventListener('mouseleave',function(){if(desk()){clearTimeout(tmr);tmr=setTimeout(function(){closeAll(null)},220)}});
 });
 document.addEventListener('click',function(e){if(!nav.contains(e.target))closeAll(null)});
 document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeAll(null);nav.classList.remove('open');b&&b.setAttribute('aria-expanded','false')}});
@@ -173,14 +219,25 @@ def hero(eyebrow, h1, lede):
 
 # ---------- HOME ----------
 MOVE_DATE = ""  # set to "YYYY-MM-DD" to start the countdown
-home = f'''<header class="hero" id="top">
+STICKERS = [("the-move.html", "thinking about moving abroad", "sun", -4), ("with-a-baby.html", "traveling with little ones", "moss", 3), ("food.html", "hungry for Ecuadorian food", "coral", -2), ("trip-planner.html", "planning a family trip", "sky", 4), ("top-20.html", "dreaming about volcanoes", "cream", -3), ("es.html", "¡aquí por el español!", "deep", 2)]
+BADGES = [("quiz.html", "quiz", "Region quiz", "5 questions"), ("top-20.html", "top20", "Vote on our Top 20", "Where first?"), ("trip-planner.html", "planner", "Trip planner", "Day by day"), ("festivals.html", "festivals", "Fiesta calendar", "Month by month"), ("postcard.html", "postcard", "Send a postcard", "Free, from 0°"), ("passport.html", "passport", "Explorer passport", "12 stamps")]
+ROUTE = [("Ecuador", "Our future home base", "First", 8, 70), ("Colombia", "Cartagena, coffee country, Medellín", "Then", 36, 30), ("Peru", "Lima, Cusco, the Sacred Valley", "Planned", 64, 66), ("Chile & Argentina", "Patagonia, Mendoza, Buenos Aires", "Someday", 92, 28)]
+home = f'''<header class="hero hm-hero" id="top">
   <div class="wrap">
-    <div class="coords"><span>0° 00′ 00″ LAT</span><span>78° 27′ W</span><span>ECUADOR</span></div>
-    <h1>An American-Ecuadorian family moves to the <em>middle of the world.</em></h1>
-    <p class="lede">We're Austin, Dennisse and baby Mateo, relocating from Pennsylvania to Ecuador. Follow the whole move as it happens, then come exploring the Andes, the coast, the Amazon and South America with us.</p>
-    <div class="hero-cta">
-      <a class="btn btn-sun" href="start-here.html">Start here</a>
-      <a class="btn btn-ghost" href="the-move.html">Follow the move</a>
+    <div class="hm-hero-copy">
+      <div class="coords"><span>0° 00′ 00″ LAT</span><span>78° 27′ W</span><span>ECUADOR</span></div>
+      <h1>An American-Ecuadorian family moves to the <em>middle of the world.</em></h1>
+      <p class="lede">We're Austin, Dennisse and baby Mateo, relocating from Pennsylvania to Ecuador. Follow the whole move as it happens, then come exploring the Andes, the coast, the Amazon and South America with us.</p>
+      <div class="hero-cta">
+        <a class="btn btn-sun" href="start-here.html">Start here</a>
+        <a class="btn btn-ghost" href="the-move.html">Follow the move</a>
+      </div>
+    </div>
+    <div class="hm-polas" aria-label="Places on our list">
+      <figure class="hm-pola" style="--r:-7deg;--x:0%;--y:3%;--d:0s"><img src="img/quilotoa-800.jpg" alt="The Quilotoa crater lake"><figcaption>Quilotoa!</figcaption></figure>
+      <figure class="hm-pola" style="--r:6deg;--x:54%;--y:0%;--d:-2s"><img src="img/santacruz-800.jpg" alt="A giant tortoise on Santa Cruz, Galápagos"><figcaption>Galápagos pals</figcaption></figure>
+      <figure class="hm-pola" style="--r:-3deg;--x:22%;--y:55%;--d:-4s"><img src="img/f_bolon-800.jpg" alt="A bolón de verde, a fried green plantain ball"><figcaption>Bolón for breakfast</figcaption></figure>
+      <span class="hm-note" aria-hidden="true">Tap a photo!</span>
     </div>
   </div>
   <svg class="ridge" viewBox="0 0 1200 200" preserveAspectRatio="none" aria-hidden="true">
@@ -191,110 +248,119 @@ home = f'''<header class="hero" id="top">
   <div class="equator" aria-hidden="true"><span>EQUATOR · 0°</span><i class="sun-dot"></i></div>
 </header>
 <div class="marquee" aria-hidden="true"><div class="marquee-track">{"".join(f"<span>{p}</span>" for p in ["Quito","Mitad del Mundo","Cotopaxi","Quilotoa","Otavalo","Cuenca","Baños","Chimborazo","Mindo","Ingapirca","El Cajas","Guayaquil","Montañita","Puerto López","Los Frailes","Tena","Cuyabeno","Yasuní","Santa Cruz","San Cristóbal"]*2)}</div></div>
-<main>
-  <section class="paths-sec">
+<main class="hm">
+  <section class="hm-pick">
     <div class="wrap">
-      <div class="paths">
-        <a class="path" href="the-move.html"><span class="alt">THINKING ABOUT MOVING?</span><h3>Follow our move to Ecuador</h3><p>Every chapter of relocating as a family, from the decision to our first year.</p><span class="go">The move →</span></a>
-        <a class="path" href="with-a-baby.html"><span class="alt">TRAVELING WITH LITTLE ONES?</span><h3>Traveling with a baby</h3><p>The volcanoes, beaches and jungle lodges we'll explore with Mateo along for every trip.</p><span class="go">Traveling with a baby →</span></a>
-        <a class="path" href="es.html"><span class="alt">¿PREFIERES ESPAÑOL?</span><h3>Lee todo en español</h3><p>Every story is also published in Spanish, for family, friends and Ecuadorians everywhere.</p><span class="go">Español →</span></a>
-      </div>
+      <p class="hm-pick-q">I'm here because I'm…</p>
+      <svg class="hm-arrow" viewBox="0 0 120 70" aria-hidden="true"><path d="M6 10 C 40 4, 80 18, 96 52"/><path d="M84 46 L97 55 L101 39"/></svg>
+      <div class="hm-stickers">{"".join(f'<a class="hm-sticker s-{c}" href="{h}" style="--r:{r}deg">{t}</a>' for h, t, c, r in STICKERS)}</div>
     </div>
   </section>
-  <section class="paths-sec">
-    <div class="wrap home-widgets">
-      <div class="widget countdown" data-date="{MOVE_DATE}">
-        <span class="eyebrow">Moving day</span>
-        <p class="cd-big" id="cd-big">Date coming soon</p>
-        <p class="cd-sub" id="cd-sub">We're still in Wilkes-Barre, packing up. Follow along as moving day gets closer.</p>
-        <a class="go" href="the-move.html">Follow the move →</a>
+  <section class="hm-board">
+    <div class="wrap hm-board-grid">
+      <div class="hm-pass countdown" data-date="{MOVE_DATE}">
+        <div class="hm-pass-main">
+          <span class="hm-pass-air">LATITUDE ZERO AIR · BOARDING PASS</span>
+          <div class="hm-pass-route"><b>AVP</b><span class="hm-pass-line" aria-hidden="true"><i></i></span><b>UIO</b></div>
+          <div class="hm-pass-cities"><span>Wilkes-Barre</span><span>Quito</span></div>
+          <dl class="hm-pass-info">
+            <div><dt>Passengers</dt><dd>2 adults + 1 baby</dd></div>
+            <div><dt>Gate</dt><dd>0°</dd></div>
+            <div><dt>Status</dt><dd class="hm-blink">Packing up</dd></div>
+          </dl>
+        </div>
+        <div class="hm-pass-stub">
+          <span class="eyebrow">Moving day</span>
+          <p class="cd-big" id="cd-big">Date coming soon</p>
+          <p class="cd-sub">Still in Wilkes-Barre, packing up.</p>
+          <a class="go" href="the-move.html">Follow the move →</a>
+        </div>
       </div>
-      <div class="widget word flip" role="button" tabindex="0" aria-pressed="false">
+      <div class="hm-sticky word flip" role="button" tabindex="0" aria-pressed="false">
         <div class="flip-inner">
           <div class="flip-face">
-            <span class="eyebrow">Spanish word of the week</span>
+            <span class="hm-hand">Word of the week</span>
             <p class="word-big">¡Achachay!</p>
             <p class="word-say">ah-chah-CHAI</p>
             <p class="flip-hint">Tap to see what it means ↻</p>
           </div>
           <div class="flip-face flip-back">
-            <span class="eyebrow">It means</span>
+            <span class="hm-hand">It means</span>
             <p class="word-mean">"Brrr, it's cold!"</p>
             <p>An Ecuadorian exclamation from Kichwa. Dennisse says it every chilly Andes morning. Austin is still practicing.</p>
           </div>
         </div>
       </div>
-      <div class="widget play">
-        <span class="eyebrow">Play along</span>
-        <a class="play-link" href="quiz.html"><b>Which Ecuador region fits your family?</b><span>Take the 5-question quiz →</span></a>
-        <a class="play-link" href="top-20.html"><b>Where should we go first?</b><span>Vote on our Top 20 →</span></a>
-        <a class="play-link" href="trip-planner.html"><b>Planning a family trip?</b><span>Build your day-by-day plan →</span></a>
-        <a class="play-link" href="festivals.html"><b>What's happening when?</b><span>Ecuador's festival calendar →</span></a>
-      </div>
     </div>
   </section>
-  <section class="now-sec">
-    <div class="wrap now-grid">
-      <div class="now-card">
-        <span class="eyebrow">Where we are now</span>
-        <svg class="now-map" viewBox="0 0 300 220" aria-hidden="true"><path class="now-route" d="M218 40 C 200 110, 120 120, 92 176" fill="none"/><circle cx="218" cy="40" r="9" class="now-here"/><circle cx="218" cy="40" r="9" class="now-pulse"/><circle cx="92" cy="176" r="7" class="now-next"/><text x="230" y="44">PA</text><text x="104" y="198">EC · 0°</text><line x1="10" y1="176" x2="290" y2="176" class="now-eq"/></svg>
-        <p class="now-place"><b id="now-place">Wilkes-Barre, Pennsylvania</b><span>Next stop: Ecuador</span></p>
+  <section class="hm-play">
+    <div class="wrap">
+      <div class="hm-head"><span class="hm-hand">Go on, click something</span><h2>Things to play with</h2></div>
+      <div class="hm-badges">{"".join(f'<a class="hm-badge t-{TINTS[i % 4]}" href="{h}" style="--r:{(-1) ** i * (3 + i % 3 * 2)}deg"><i>{icon(k)}</i><b>{t}</b><span>{d}</span></a>' for i, (h, k, t, d) in enumerate(BADGES))}</div>
+    </div>
+  </section>
+  <section class="hm-now">
+    <div class="wrap">
+      <div class="hm-head"><span class="hm-hand">Where we are now</span><h2>Somewhere between here and there</h2></div>
+      <div class="hm-trip">
+        <svg class="hm-trip-svg" viewBox="0 0 1000 220" preserveAspectRatio="none" aria-hidden="true"><path class="hm-trip-path" d="M40 60 C 260 -10, 380 200, 560 140 S 860 40, 960 170"/></svg>
+        <div class="hm-pin hm-pin-a"><span class="hm-dot now"></span><b id="now-place">Wilkes-Barre, Pennsylvania</b><span class="hm-bubble">We're here!</span></div>
+        <div class="hm-pin hm-pin-b"><span class="hm-dot"></span><b>Ecuador · 0°</b><span>Next stop</span></div>
+        <svg class="hm-trip-plane" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2 L19 13 L30 18 L30 21 L19 18 L18 26 L22 29 L22 31 L16 29.5 L10 31 L10 29 L14 26 L13 18 L2 21 L2 18 L13 13 Z" fill="currentColor"/></svg>
       </div>
-      <div class="prep">
-        <span class="eyebrow">The prep log</span>
-        <h2>Little updates while we get ready</h2>
-        <ol class="prep-list"><li><time>October 2026</time><p>It's official: we're moving our family to Ecuador.</p></li><li><time>October 2026</time><p>Latitude Zero is born. This is where we'll share all of it.</p></li></ol>
+      <div class="hm-log">
+        <span class="hm-log-title">The prep log</span>
+        <ol><li><time>October 2026</time><p>It's official: we're moving our family to Ecuador.</p></li><li><time>October 2026</time><p>Latitude Zero is born. This is where we'll share all of it.</p></li><li class="hm-log-next"><time>Coming up</time><p>Packing up Wilkes-Barre. Stay tuned.</p></li></ol>
         <a class="link-more" href="the-move.html">Follow the whole move →</a>
       </div>
     </div>
   </section>
-  <section>
-    <div class="wrap story-grid">
-      <div class="sec-head" style="margin-bottom:0">
-        <span class="eyebrow">Who we are</span>
+  <section class="hm-who">
+    <div class="wrap hm-who-grid">
+      <div>
+        <span class="hm-hand">Who we are</span>
         <h2>Going home, for one of us. Starting over, for the rest.</h2>
         <p>Dennisse grew up in Ecuador. Austin built businesses in Wilkes-Barre, PA. When Mateo arrived, we asked where we wanted him to grow up, and the answer was Ecuador.</p>
         <a class="link-more" href="about.html">Read our story →</a>
       </div>
-      <div class="family" aria-label="The family">
-        <div class="member"><span class="initial">A</span><div><b>Austin</b><span>Operator, builder, coffee person.</span></div></div>
-        <div class="member"><span class="initial">D</span><div><b>Dennisse</b><span>Ecuadorian by birth. Our guide.</span></div></div>
-        <div class="member"><span class="initial">M</span><div><b>Mateo</b><span>The youngest member of the expedition.</span></div></div>
+      <div class="hm-fam" aria-label="The family">
+        <div class="hm-face f-a" style="--r:-6deg"><span class="hm-face-i" aria-hidden="true">A</span><b>Austin</b><span>Operator, builder, coffee person.</span></div>
+        <div class="hm-face f-d" style="--r:5deg"><span class="hm-face-i" aria-hidden="true">D</span><b>Dennisse</b><span>Ecuadorian by birth. Our guide.</span></div>
+        <div class="hm-face f-m" style="--r:-2deg"><span class="hm-face-i" aria-hidden="true">M</span><b>Mateo</b><span>The youngest member of the expedition.</span></div>
       </div>
     </div>
   </section>
-  <section class="regions-bg">
+  <section class="hm-regions">
     <div class="wrap">
-      <div class="sec-head"><span class="eyebrow">Four worlds, one country</span><h2>Ecuador's four regions</h2></div>
-      <div class="regions">
-        <a class="region" href="ecuador.html#costa" style="text-decoration:none"><img class="region-img" src="img/frailes.jpg" alt="Los Frailes beach" loading="lazy"><span class="alt">PACIFIC COAST</span><h3>La Costa</h3><p>Pacific beaches, ceviche and cacao country.</p></a>
-        <a class="region" href="ecuador.html#sierra" style="text-decoration:none"><img class="region-img" src="img/cotopaxi.jpg" alt="Cotopaxi volcano" loading="lazy"><span class="alt">THE ANDES</span><h3>La Sierra</h3><p>Quito, Cuenca and the volcanoes of the Andes.</p></a>
-        <a class="region" href="ecuador.html#amazonia" style="text-decoration:none"><img class="region-img" src="img/tena.jpg" alt="The Napo River near Tena" loading="lazy"><span class="alt">AMAZON RAINFOREST</span><h3>Amazonía</h3><p>Rainforest, river towns and waterfalls.</p></a>
-        <a class="region" href="ecuador.html#galapagos" style="text-decoration:none"><img class="region-img" src="img/santacruz.jpg" alt="A giant tortoise on Santa Cruz" loading="lazy"><span class="alt">ISLANDS</span><h3>Galápagos</h3><p>Tortoises, sea lions and blue-footed boobies.</p></a>
+      <div class="hm-head"><span class="hm-hand">Four worlds, one country</span><h2>Ecuador's four regions</h2></div>
+      <div class="hm-arches">
+        <a class="hm-arch" href="ecuador.html#costa"><span class="hm-arch-img"><img src="img/frailes-800.jpg" alt="Los Frailes beach" loading="lazy"></span><span class="alt">Pacific coast</span><b>La Costa</b><span>Pacific beaches, ceviche and cacao country.</span></a>
+        <a class="hm-arch" href="ecuador.html#sierra"><span class="hm-arch-img"><img src="img/cotopaxi-800.jpg" alt="Cotopaxi volcano" loading="lazy"></span><span class="alt">The Andes</span><b>La Sierra</b><span>Quito, Cuenca and the volcanoes of the Andes.</span></a>
+        <a class="hm-arch" href="ecuador.html#amazonia"><span class="hm-arch-img"><img src="img/tena-800.jpg" alt="The Napo River near Tena" loading="lazy"></span><span class="alt">Amazon rainforest</span><b>Amazonía</b><span>Rainforest, river towns and waterfalls.</span></a>
+        <a class="hm-arch" href="ecuador.html#galapagos"><span class="hm-arch-img"><img src="img/santacruz-800.jpg" alt="A giant tortoise on Santa Cruz" loading="lazy"></span><span class="alt">Islands</span><b>Galápagos</b><span>Tortoises, sea lions and blue-footed boobies.</span></a>
       </div>
-      <div style="display:flex;flex-wrap:wrap;gap:0 28px"><a class="link-more" href="ecuador.html">Explore the Ecuador guide →</a><a class="link-more" href="top-20.html">Our top 20 places to visit →</a></div>
+      <div class="hm-links"><a class="link-more" href="ecuador.html">Explore the Ecuador guide →</a><a class="link-more" href="top-20.html">Our top 20 places to visit →</a></div>
     </div>
   </section>
-  <section>
+  <section class="hm-journal">
     <div class="wrap">
-      <div class="sec-head"><span class="eyebrow">The journal</span><h2>Latest dispatches</h2></div>
-      <div class="posts">{"".join(post_card(POSTS[i]) for i in (0,3,8))}</div>
+      <div class="hm-head"><span class="hm-hand">The journal</span><h2>Latest dispatches</h2></div>
+      <div class="posts hm-posts">{"".join(post_card(POSTS[i]) for i in (0,3,8))}</div>
       <a class="link-more" href="journal.html">See all stories →</a>
     </div>
   </section>
-  <section class="route">
+  <section class="hm-route">
     <div class="wrap">
-      <div class="sec-head"><span class="eyebrow">Beyond Ecuador</span><h2>Ecuador first. Then the rest of the continent.</h2></div>
-      <ol class="stops">
-        <li class="stop now"><span class="dot" aria-hidden="true"></span><div><b>Ecuador</b><span>Our future home base</span></div><em>FIRST</em></li>
-        <li class="stop"><span class="dot" aria-hidden="true"></span><div><b>Colombia</b><span>Cartagena, the coffee region, Medellín</span></div><em>THEN</em></li>
-        <li class="stop"><span class="dot" aria-hidden="true"></span><div><b>Peru</b><span>Lima, Cusco, the Sacred Valley</span></div><em>PLANNED</em></li>
-      </ol>
-      <a class="link-more" href="south-america.html" style="color:var(--sun)">See the full route →</a>
+      <div class="hm-head"><span class="hm-hand">Beyond Ecuador</span><h2>Ecuador first. Then the rest of the continent.</h2></div>
+      <div class="hm-map">
+        <svg class="hm-map-svg" viewBox="0 0 1000 300" preserveAspectRatio="none" aria-hidden="true"><path class="hm-map-path" d="M80 210 C 200 40, 300 60, 360 90 S 560 260, 640 198 S 820 40, 920 84"/></svg>
+        <ol class="hm-stops">{"".join(f'<li class="hm-stop{" now" if i == 0 else ""}" style="--x:{x}%;--y:{y}%"><span class="hm-dot{" now" if i == 0 else ""}"></span><em>{tag}</em><b>{n}</b><span>{d}</span></li>' for i, (n, d, tag, x, y) in enumerate(ROUTE))}</ol>
+      </div>
+      <a class="link-more" href="south-america.html">See the full route →</a>
     </div>
   </section>
 </main>'''
-page("index.html", "Latitude Zero", "home", home, index=True)
+page("index.html", "Latitude Zero", "home", home, script='<script src="home.js" defer></script>')
 
 # ---------- ABOUT ----------
 about = hero("About us", "Going home, for one of us. <em>Starting over,</em> for the rest.",

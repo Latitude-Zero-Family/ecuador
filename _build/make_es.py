@@ -35,7 +35,7 @@ skel=_r.sub(r'<title>.*?</title>','<title>Latitude Zero</title>',open('about.htm
 for f in sorted(glob.glob('*.html')):
     if f.endswith('-es.html') or f=='es.html': continue
     h=open(f).read()
-    if f=='index.html': h=skel+'<nav'+h.split('<nav',1)[1]+'\n</body>\n</html>\n'
+    pass
     h=h.replace('<html lang="en">','<html lang="es">')
     en_href='./' if f=='index.html' else f
     h=re.sub(r'<a href="#" aria-current="true" lang="en">EN</a><a href="[^"]+" lang="es" hreflang="es">ES</a>','__LANG__',h)
