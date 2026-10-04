@@ -40,7 +40,8 @@ passport = hero("Explorer passport", "Your Latitude Zero <em>explorer passport</
     </div>
   </section>
 </main>'''
-page("passport.html", "Explorer Passport · Latitude Zero", "passport", passport)
+# passport page switched off for now
+# page("passport.html", "Explorer Passport · Latitude Zero", "passport", passport)
 
 # ---------- POSTCARD ----------
 PC = [("quilotoa", "Quilotoa"), ("mitad", "Mitad del Mundo"), ("frailes", "Los Frailes"), ("santacruz", "Galápagos"), ("cotopaxi", "Cotopaxi"), ("cuenca", "Cuenca"), ("banos", "Baños"), ("mindo", "Mindo")]

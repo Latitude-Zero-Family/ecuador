@@ -19,13 +19,14 @@
   function link(name) { return ES ? name.replace('.html', '-es.html') : name; }
 
   /* ---------- 1. Explorer passport ---------- */
+  var PASSPORT_ON = false; // explorer passport is switched off for now; set to true to bring it back
   var STAMPS = ['story', 'quiz', 'planner', 'plate', 'pack', 'flash', 'vote', 'checklist', 'postcard', 'festival', 'guide', 'spanish'];
   var KEY = 'lz-passport', got = store(KEY) || {};
   var badge = document.createElement('a');
   badge.className = 'passport-fab'; badge.href = link('passport.html');
   badge.setAttribute('aria-label', S.passport_label || 'Explorer passport');
   badge.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="11" r="3.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8.8 11h6.4M9 17h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span class="pf-n"></span>';
-  document.body.appendChild(badge);
+  if (PASSPORT_ON) document.body.appendChild(badge);
   function count() { return STAMPS.filter(function (k) { return got[k]; }).length; }
   function paintBadge() { $('.pf-n', badge).textContent = count() + '/' + STAMPS.length; badge.classList.toggle('full', count() === STAMPS.length); }
   paintBadge();
@@ -37,6 +38,7 @@
     setTimeout(function () { t.classList.add('out'); }, 3200); setTimeout(function () { t.remove(); }, 3800);
   }
   function stamp(k) {
+    if (!PASSPORT_ON) return;
     if (got[k] || STAMPS.indexOf(k) < 0) return;
     got[k] = new Date().toISOString(); store(KEY, got); paintBadge();
     badge.classList.remove('bump'); void badge.offsetWidth; badge.classList.add('bump');

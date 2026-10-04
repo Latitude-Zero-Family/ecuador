@@ -20,7 +20,7 @@ MENU = [
   ("Our story", [("start-here.html","Start here","New here? Begin with this","start"),("about.html","About us","Austin, Dennisse and Mateo","about"),("the-move.html","The move","Our relocation, chapter by chapter","move"),("dennisse.html","Dennisse's Ecuador","Her column, in her words","dennisse")]),
   ("Ecuador", [("ecuador.html","Ecuador guide","The four regions and quick facts","ecuador"),("top-20.html","Top 20 places","Our Ecuador bucket list","top20"),("food.html","Food & recipes","What to eat, region by region","food"),("coffee-cacao.html","Coffee & cacao","From farm to cup","coffee"),("quiz.html","Region quiz","Which region fits your family?","quiz"),("festivals.html","Festival calendar","Celebrations, month by month","festivals"),("south-america.html","Beyond Ecuador","Our South America route","sa")]),
   ("Family travel", [("trip-planner.html","Trip planner","Build a day-by-day family plan","planner"),("with-a-baby.html","Traveling with a baby","Exploring Ecuador with Mateo","baby"),("gear.html","What we're packing","Our family packing list","gear"),("checklist.html","Moving checklist","Free: moving abroad with a baby","checklist"),("moving-with-kids.html","Moving with kids FAQ","Your questions, our answers","faq")]),
-  ("Stories", [("journal.html","Journal","Every story we publish","journal"),("videos.html","Videos","Our YouTube series","videos"),("reader-stories.html","Reader stories","Share your family's story","stories"),("community.html","Community","Contests, photos and more","community"),("postcard.html","Send a postcard","Free postcards from the equator","postcard"),("passport.html","Explorer passport","Collect stamps around the site","passport")]),
+  ("Stories", [("journal.html","Journal","Every story we publish","journal"),("videos.html","Videos","Our YouTube series","videos"),("reader-stories.html","Reader stories","Share your family's story","stories"),("community.html","Community","Contests, photos and more","community"),("postcard.html","Send a postcard","Free postcards from the equator","postcard")]),
   ("Work with us", [("work-with-us.html","Partnerships","Ways to collaborate","work"),("media-kit.html","Media kit","For brands and media","kit")]),
 ]
 
@@ -82,8 +82,8 @@ MEGA = {
  "Our story": ("Meet the family", "An American dad, an Ecuadorian mom and a baby boy, packing up for the equator.", "cuenca", "Our first story", "Why we're moving our family to Ecuador", "journal-why-ecuador.html", "Read it"),
  "Ecuador": ("Four worlds, one country", "Volcanoes, beaches, rainforest and the Galápagos. Plus all the food.", "quilotoa", "Two-minute quiz", "Which Ecuador region fits your family?", "quiz.html", "Take the quiz"),
  "Family travel": ("Little legs, big trips", "Plans, packing lists and honest notes on exploring with a baby.", "frailes", "Free planner", "Build a day-by-day family trip", "trip-planner.html", "Start planning"),
- "Stories": ("Pull up a chair", "Our journal, our videos and plenty of fun ways to join in.", "cotopaxi", "12 stamps to collect", "Fill your explorer passport", "passport.html", "Open your passport"),
- "Work with us": ("Let's make something", "For hotels, tourism boards and family brands that travel like we do.", "montanita", "For partners", "See who we create for", "media-kit.html", "Open the media kit"),
+ "Stories": ("Pull up a chair", "Our journal, our videos and plenty of fun ways to join in.", "montanita", "Free, from 0°", "Send a postcard from the equator", "postcard.html", "Make a postcard"),
+ "Work with us": ("Let's make something", "For hotels, tourism boards and family brands that travel like we do.", "guayaquil", "For partners", "See who we create for", "media-kit.html", "Open the media kit"),
 }
 TINTS = ["sun", "moss", "sky", "coral"]
 
@@ -170,9 +170,9 @@ go();window.addEventListener('load',go);window.addEventListener('pageshow',go);}
 <script>
 (function(){var nav=document.querySelector('.nav'),b=document.querySelector('.menu-btn');if(!nav)return;
 var groups=[].slice.call(document.querySelectorAll('.grp'));
-function closeAll(ex){groups.forEach(function(g){if(g!==ex){g.classList.remove('open');g.querySelector('.grp-btn').setAttribute('aria-expanded','false')}})}
+function closeAll(ex){if(!ex)nav.classList.remove('mm-swap');groups.forEach(function(g){if(g!==ex){g.classList.remove('open');g.querySelector('.grp-btn').setAttribute('aria-expanded','false')}})}
 var DESK='(hover:hover) and (min-width:1101px)',tmr=null;function desk(){return window.matchMedia(DESK).matches}
-function openG(g){clearTimeout(tmr);closeAll(g);g.classList.add('open');g.querySelector('.grp-btn').setAttribute('aria-expanded','true')}
+function openG(g){clearTimeout(tmr);var was=nav.querySelector('.grp.open');if(was&&was!==g)nav.classList.add('mm-swap');closeAll(g);g.classList.add('open');g.querySelector('.grp-btn').setAttribute('aria-expanded','true')}
 groups.forEach(function(g){var btn=g.querySelector('.grp-btn');
   btn.addEventListener('click',function(e){e.stopPropagation();if(desk()){if(g.classList.contains('open')&&e.detail===0){closeAll(null)}else openG(g);return}var o=g.classList.toggle('open');btn.setAttribute('aria-expanded',o?'true':'false');closeAll(g)});
   g.addEventListener('mouseenter',function(){if(desk()){clearTimeout(tmr);tmr=setTimeout(function(){openG(g)},nav.querySelector('.grp.open')?0:70)}});
@@ -208,19 +208,27 @@ def page(fname, title, active, body, index=False, script=""):
     open(fname, "w").write(html)
 
 HERO_PHOTO = {"About us":"cuenca","Ecuador guide":"quilotoa","The journal":"cajas","Our Ecuador bucket list":"cotopaxi","Beyond Ecuador":"chimborazo","Partnerships":"montanita","Photo credits":"ingapirca"}
+POLA_CAP = {"quilotoa":"Quilotoa!","santacruz":"Galápagos pals","f_bolon":"Bolón for breakfast","cotopaxi":"Hola, Cotopaxi","mindo":"Mindo orchids","otavalo":"Market day","cuenca":"Cuenca rooftops","montanita":"Sunset surf","mitad":"Standing on 0°","banos":"Waterfall chasing","frailes":"Beach day!","sancristobal":"Sea lion nap","f_hornado":"Hornado!","f_colada":"Colada morada","chimborazo":"Hello, Chimborazo","cajas":"Lakes of El Cajas","quito":"Quito, hola","ingapirca":"Ingapirca","tena":"Napo River","f_encebollado":"Encebollado time","f_llapingachos":"Llapingachos!","isla":"Isla de la Plata"}
+POLA_POOL = ["santacruz","f_bolon","mindo","quilotoa","sancristobal","f_llapingachos","banos","frailes","cotopaxi","f_encebollado","mitad","isla","otavalo","cuenca"]
+POLA_ROT = [-6, 5, -4, 7, -3, 6]
 def hero(eyebrow, h1, lede):
     ph = HERO_PHOTO.get(eyebrow)
     style = f' style="--photo:url(img/{ph}.jpg)"' if ph else ""
-    return f'''<header class="page-hero has-photo"{style}><div class="wrap">
+    h = sum(map(ord, eyebrow))
+    pool = [p for p in POLA_POOL if p != ph]
+    pp = pool[h % len(pool)]
+    pola = f'<figure class="ph-pola" aria-hidden="true" style="--r:{POLA_ROT[h % 6]}deg"><img src="img/{pp}-800.jpg" alt=""><figcaption>{POLA_CAP[pp]}</figcaption></figure>'
+    return f'''<header class="page-hero has-photo has-pola"{style}><div class="wrap">
   <span class="eyebrow">{eyebrow}</span>
   <h1>{h1}</h1>
   <p>{lede}</p>
+  {pola}
 </div></header>'''
 
 # ---------- HOME ----------
 MOVE_DATE = ""  # set to "YYYY-MM-DD" to start the countdown
 STICKERS = [("the-move.html", "thinking about moving abroad", "sun", -4), ("with-a-baby.html", "traveling with little ones", "moss", 3), ("food.html", "hungry for Ecuadorian food", "coral", -2), ("trip-planner.html", "planning a family trip", "sky", 4), ("top-20.html", "dreaming about volcanoes", "cream", -3), ("es.html", "¡aquí por el español!", "deep", 2)]
-BADGES = [("quiz.html", "quiz", "Region quiz", "5 questions"), ("top-20.html", "top20", "Vote on our Top 20", "Where first?"), ("trip-planner.html", "planner", "Trip planner", "Day by day"), ("festivals.html", "festivals", "Fiesta calendar", "Month by month"), ("postcard.html", "postcard", "Send a postcard", "Free, from 0°"), ("passport.html", "passport", "Explorer passport", "12 stamps")]
+BADGES = [("quiz.html", "quiz", "Region quiz", "5 questions"), ("top-20.html", "top20", "Vote on our Top 20", "Where first?"), ("trip-planner.html", "planner", "Trip planner", "Day by day"), ("festivals.html", "festivals", "Fiesta calendar", "Month by month"), ("postcard.html", "postcard", "Send a postcard", "Free, from 0°"), ("food.html", "food", "Build a plate", "Ecuadorian food")]
 ROUTE = [("Ecuador", "Our future home base", "First", 8, 70), ("Colombia", "Cartagena, coffee country, Medellín", "Then", 36, 30), ("Peru", "Lima, Cusco, the Sacred Valley", "Planned", 64, 66), ("Chile & Argentina", "Patagonia, Mendoza, Buenos Aires", "Someday", 92, 28)]
 home = f'''<header class="hero hm-hero" id="top">
   <div class="wrap">

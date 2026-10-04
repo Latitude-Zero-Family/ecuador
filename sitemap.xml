@@ -192,14 +192,6 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://latitudezerofamily.com/reader-stories.html"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://latitudezerofamily.com/reader-stories-es.html"/>
   </url>
-  <url><loc>https://latitudezerofamily.com/passport.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://latitudezerofamily.com/passport.html"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://latitudezerofamily.com/passport-es.html"/>
-  </url>
-  <url><loc>https://latitudezerofamily.com/passport-es.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://latitudezerofamily.com/passport.html"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://latitudezerofamily.com/passport-es.html"/>
-  </url>
   <url><loc>https://latitudezerofamily.com/postcard.html</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://latitudezerofamily.com/postcard.html"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://latitudezerofamily.com/postcard-es.html"/>

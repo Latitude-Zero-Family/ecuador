@@ -1753,3 +1753,121 @@ html[data-page="with-a-baby"] .firsts{grid-template-columns:repeat(3,minmax(0,1f
 @media (max-width:900px){.hm-polas{height:370px}.hm-pola:nth-child(1){left:0!important;top:0!important}.hm-pola:nth-child(2){left:56%!important;top:3%!important}.hm-pola:nth-child(3){left:24%!important;top:52%!important}}
 @media (max-width:520px){.hm-polas{height:350px}}
 html[lang="es"] .sub.mega .mega-links a[aria-current="page"] b::after{content:"Estás aquí"}
+.two-homes .th-top{object-position:center 62%}
+
+/* ===================== v7: mega menu polish ===================== */
+@media (min-width:1101px){
+  .grp:not(.open) > .sub.mega{pointer-events:none}
+  .grp:not(.open) > .sub.mega::before{display:none}
+  .nav.mm-swap .sub.mega{transition:none!important}
+  .nav.mm-swap .grp.open .mega-links li{animation:none;opacity:1;transform:none}
+  .sub.mega{max-height:calc(100vh - 80px);overflow-y:auto;overscroll-behavior:contain}
+}
+
+/* ===================== v7: playful layer for every page ===================== */
+/* hand-written section labels */
+main .sec-head > .eyebrow,main .cm-head > .eyebrow,main .hm-head .eyebrow{display:inline-block;font:700 1.45rem/1 var(--hand);letter-spacing:0;text-transform:none;color:var(--coral);transform:rotate(-3deg);margin-bottom:4px}
+.route .sec-head > .eyebrow,.regions-bg .sec-head > .eyebrow{color:var(--coral)}
+.page-hero .eyebrow{display:inline-block;justify-self:start;font:700 1.5rem/1 var(--hand);letter-spacing:0;text-transform:none;color:var(--sun);transform:rotate(-3deg)}
+
+/* page banners: a taped polaroid on the right */
+.page-hero.has-pola .wrap{position:relative}
+.ph-pola{position:absolute;right:20px;top:50%;width:210px;margin:0;background:#fffdf7;padding:9px 9px 0;border-radius:4px;box-shadow:0 20px 40px -16px rgba(0,0,0,.6);transform:translateY(-50%) rotate(var(--r));animation:ph-float 7s ease-in-out infinite;z-index:1;transition:transform .45s cubic-bezier(.3,1.5,.5,1)}
+.ph-pola::before{content:"";position:absolute;top:-10px;left:50%;width:66px;height:20px;margin-left:-33px;background:color-mix(in srgb,var(--sun) 72%,transparent);transform:rotate(-4deg)}
+.ph-pola img{display:block;width:100%;aspect-ratio:1;object-fit:cover;border-radius:2px}
+.ph-pola figcaption{font:700 1.25rem/1 var(--hand);color:#2b3a35;text-align:center;padding:9px 4px 11px}
+.page-hero:hover .ph-pola{transform:translateY(-50%) rotate(0) scale(1.04)}
+@keyframes ph-float{0%,100%{translate:0 0}50%{translate:0 -8px}}
+@media (min-width:821px){
+  .page-hero.has-pola h1,.page-hero.has-pola p{max-width:min(16ch,calc(100% - 270px))}
+  .page-hero.has-pola p{max-width:min(56ch,calc(100% - 270px))}
+  .page-hero.has-pola .page-doodle{right:max(205px,calc((100vw - 1120px) / 2 + 205px));top:auto;bottom:18px;width:96px;height:96px;transform:translate(var(--px,0),var(--py,0)) rotate(-8deg);z-index:2}
+  .page-hero.has-pola .page-doodle.pd-south-america,.page-hero.has-pola .page-doodle.pd-journal,.page-hero.has-pola .page-doodle.pd-trip-planner,.page-hero.has-pola .page-doodle.pd-with-a-baby{width:120px;height:72px}
+}
+@media (max-width:820px){
+  .ph-pola{position:relative;right:auto;top:auto;transform:rotate(var(--r));width:150px;justify-self:end;margin:6px 6px -6px 0}
+  .page-hero:hover .ph-pola{transform:rotate(0)}
+  .ph-pola figcaption{font-size:1.05rem}
+}
+@media (max-width:420px){.ph-pola{width:130px}}
+
+/* cards: soft paper, tape stripes, playful tilt */
+main :is(.offer,.dish,.fest,.vote-card,.series-card){border:0!important;border-radius:22px;background:var(--surface);box-shadow:0 18px 36px -24px rgba(15,59,58,.55);transition:rotate .4s cubic-bezier(.3,1.6,.5,1),translate .4s cubic-bezier(.3,1.6,.5,1),box-shadow .3s;position:relative}
+main :is(.offer,.dish,.fest):nth-child(4n+1){rotate:-1deg}
+main :is(.offer,.dish,.fest):nth-child(4n+2){rotate:.8deg}
+main :is(.offer,.dish,.fest):nth-child(4n+3){rotate:-.5deg}
+main :is(.offer,.dish,.fest):nth-child(4n){rotate:1deg}
+main :is(.offer,.dish,.fest):hover{rotate:0deg;translate:0 -6px;box-shadow:0 26px 44px -24px rgba(15,59,58,.6)}
+main .offer{background:linear-gradient(var(--tint,var(--sun)) 0 0) top/100% 8px no-repeat,var(--surface);padding-top:30px}
+main .offer:nth-child(4n+2){--tint:var(--moss)}main .offer:nth-child(4n+3){--tint:var(--sky)}main .offer:nth-child(4n){--tint:var(--coral)}
+main .offer .alt{font:700 1.2rem/1 var(--hand);letter-spacing:0;text-transform:none;color:var(--coral)}
+main :is(.dish,.fest) img{border-radius:14px;width:calc(100% - 16px);margin:8px 8px 0}
+main :is(.dish,.fest){padding-bottom:4px}
+
+/* journal cards everywhere become polaroids */
+.posts .post{border:0;border-radius:10px;padding:10px;background:#fff;box-shadow:0 20px 40px -24px rgba(15,59,58,.55);rotate:-1.2deg;transition:rotate .4s cubic-bezier(.3,1.6,.5,1),translate .4s}
+.posts .post:nth-child(3n+2){rotate:1.2deg}.posts .post:nth-child(3n){rotate:-.4deg}
+.posts .post:hover{rotate:0deg;translate:0 -6px}
+.posts .post-art{border-radius:6px;overflow:hidden}
+.posts .post-body{padding:16px 8px 10px}
+
+/* facts become little stickers */
+main .facts{border:0!important;background:none!important;gap:14px;display:grid}
+main .fact{border:0!important;background:var(--surface);border-radius:18px;box-shadow:0 12px 26px -20px rgba(15,59,58,.6);padding:18px 20px}
+main .fact:nth-child(odd){rotate:-1deg}main .fact:nth-child(even){rotate:1deg}
+main .fact dt{font:700 1.15rem/1 var(--hand);letter-spacing:0;text-transform:none;color:var(--coral)}
+
+/* FAQ as speech bubbles */
+main .faq{border:0;background:var(--surface);border-radius:20px 20px 20px 6px;padding:0 22px;margin-bottom:12px;box-shadow:0 12px 26px -20px rgba(15,59,58,.6);transition:translate .3s}
+main .faq:hover{translate:4px 0}
+main .faq[open]{background:var(--cream)}
+
+/* checklist groups as notepad pages */
+main .chk-group{background:var(--surface);border-radius:20px;padding:24px 24px 14px;box-shadow:0 16px 32px -24px rgba(15,59,58,.55);background-image:linear-gradient(var(--coral),var(--coral));background-size:2px 100%;background-position:44px 0;background-repeat:no-repeat}
+main .chk-group:nth-child(odd){rotate:-.6deg}main .chk-group:nth-child(even){rotate:.6deg}
+main .chk-group h2{padding-left:30px}
+
+/* top 20 rows: framed photos and hand-drawn numbers */
+main .place .num{font:700 2.6rem/1 var(--hand);color:var(--coral)}
+main .place-img{border:6px solid #fff;border-radius:6px;box-shadow:0 12px 24px -16px rgba(0,0,0,.5);rotate:-2deg;transition:rotate .35s cubic-bezier(.3,1.6,.5,1)}
+main .place:nth-child(even) .place-img{rotate:2deg}
+main .place:hover .place-img{rotate:0deg;scale:1.04}
+
+/* photos inside pages get a frame */
+main :is(.detail-img,.article-art){border:8px solid #fff;border-radius:10px;box-shadow:0 22px 40px -26px rgba(0,0,0,.55)}
+main .region-detail:nth-child(odd) .detail-img{rotate:-.8deg}main .region-detail:nth-child(even) .detail-img{rotate:.8deg}
+main .credit img{border:4px solid #fff;box-shadow:0 8px 16px -10px rgba(0,0,0,.5);rotate:-2deg}
+
+/* bullets become little suns */
+main :is(.region-detail ul,.prose ul,.country ul,.offer ul){list-style:none;padding-left:0}
+main :is(.region-detail,.prose,.country,.offer) ul li{position:relative;padding-left:24px}
+main :is(.region-detail,.prose,.country,.offer) ul li::before{content:"";position:absolute;left:2px;top:.55em;width:10px;height:10px;border-radius:50%;background:var(--sun);box-shadow:0 0 0 3px color-mix(in srgb,var(--sun) 30%,transparent)}
+
+/* buttons and chips feel like stickers */
+.btn-sun{box-shadow:0 3px 0 #c48d10,0 10px 18px -10px rgba(0,0,0,.35);transition:transform .25s cubic-bezier(.3,1.6,.5,1),box-shadow .2s,filter .2s}
+.btn-sun:hover{transform:translateY(-2px) rotate(-1.5deg);box-shadow:0 5px 0 #c48d10,0 14px 22px -10px rgba(0,0,0,.4)}
+.btn-sun:active{transform:translateY(2px);box-shadow:0 1px 0 #c48d10}
+main .chip{border-radius:999px;transition:transform .25s cubic-bezier(.3,1.6,.5,1)}
+main .chip:hover{transform:rotate(-3deg) scale(1.06)}
+main .chip[aria-pressed="true"]{transform:rotate(-2deg)}
+
+/* forms on cream paper with tape */
+main :is(.mail-form,.cm-form,.pc-form){position:relative;background:var(--cream);border:0;border-radius:22px;padding:30px 26px 26px;box-shadow:0 18px 36px -26px rgba(15,59,58,.55)}
+main :is(.mail-form,.cm-form,.pc-form)::before{content:"";position:absolute;top:-11px;left:50%;width:96px;height:22px;margin-left:-48px;background:color-mix(in srgb,var(--sun) 70%,transparent);transform:rotate(-3deg)}
+main :is(.mail-form,.cm-form,.pc-form) :is(input:not([type=checkbox]):not([type=radio]):not([type=range]),textarea,select){border-radius:14px;border:2px solid var(--line);background:#fff;transition:border-color .2s,box-shadow .2s}
+main :is(.mail-form,.cm-form,.pc-form) :is(input,textarea,select):focus{border-color:var(--sun);box-shadow:0 0 0 4px color-mix(in srgb,var(--sun) 25%,transparent);outline:0}
+
+/* section headings: a tiny doodle star that twinkles */
+main .sec-head h2{position:relative}
+main .sec-head h2::after{content:"";display:inline-block;width:.55em;height:.55em;margin-left:.25em;vertical-align:.45em;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-34 -34 68 68'%3E%3Cpath d='M0 -34 Q5 -5 34 0 Q5 5 0 34 Q-5 5 -34 0 Q-5 -5 0 -34 Z' fill='%23f2b632'/%3E%3C/svg%3E") center/contain no-repeat;animation:twinkle-s 2.8s ease-in-out infinite}
+@keyframes twinkle-s{50%{transform:scale(.6) rotate(45deg);opacity:.6}}
+
+/* newsletter: a little paper plane */
+.news-copy{position:relative}
+.news-copy h2::after{content:"";display:inline-block;width:1em;height:1em;margin-left:.3em;vertical-align:-.05em;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f2b632' stroke-width='1.8' stroke-linejoin='round'%3E%3Cpath d='M2.5 13.5 21 6.5l-4.5 13-3.6-5.4z'/%3E%3Cpath d='M12.9 14.1 21 6.5'/%3E%3C/svg%3E") center/contain no-repeat;animation:hm-hover 3s ease-in-out infinite}
+
+@media (prefers-reduced-motion:reduce){.ph-pola,main .sec-head h2::after,.news-copy h2::after{animation:none!important}}
+@media (max-width:620px){main :is(.offer,.dish,.fest,.fact,.chk-group,.posts .post){rotate:0deg!important}.posts .post{rotate:0deg}}
+@media (max-width:1100px){.sub.mega .mm-ic,.sub.mega .mm-ic[class*="t-"]{background:#fff;color:#e3a417;box-shadow:0 2px 6px -2px rgba(0,0,0,.3)}.home-link svg{color:var(--sun)}}
+main .chk-group{background-position:12px 0}main .chk-group h2{padding-left:4px}
+@media (max-width:820px){.ph-pola{width:124px;margin:-4px 4px -10px 0}}
